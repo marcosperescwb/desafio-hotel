@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity(name = "hospede")
-public class HospedeModel {
+public class Hospede {
 
     @Id
     @GeneratedValue

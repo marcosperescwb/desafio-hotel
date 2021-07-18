@@ -5,9 +5,9 @@ import java.util.Date;
 
 
 @Entity(name = "checkin")
-       // "SELECT * FROM checkin INNER JOIN hospede on checkin.id = hospede.id and hospede.nome = 'Marcos Peres'")
+// "SELECT * FROM checkin INNER JOIN hospede on checkin.id = hospede.id and hospede.nome = 'Marcos Peres'")
 
-public class CheckinModel {
+public class Checkin {
 
 
     @Id
@@ -21,7 +21,7 @@ public class CheckinModel {
     private boolean adicionalVeiculo;
     @ManyToOne
     @JoinColumn(name = "id")
-    private HospedeModel hospede;
+    private Hospede hospede;
 
     public Integer getIdCheckin() {
         return idCheckin;
@@ -55,11 +55,11 @@ public class CheckinModel {
         this.adicionalVeiculo = adicionalVeiculo;
     }
 
-    public HospedeModel getHospede() {
+    public Hospede getHospede() {
         return hospede;
     }
 
-    public void setHospede(HospedeModel hospede) {
+    public void setHospede(Hospede hospede) {
         this.hospede = hospede;
     }
 }

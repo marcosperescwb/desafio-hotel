@@ -10,14 +10,6 @@ public class EncodeString {
             switch (caracter) {
                 case '+':
                     n.append(" ");
-                case '-':
-                    n.append("");
-                case '.':
-                    n.append("");
-                case '(':
-                    n.append("");
-                case ')':
-                    n.append("");
                     break;
                 default:
                     n.append(caracter);

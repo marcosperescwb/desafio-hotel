@@ -1,6 +1,6 @@
 package br.com.senior.desafiohotel.utils;
 
-import br.com.senior.desafiohotel.model.CheckinModel;
+import br.com.senior.desafiohotel.model.Checkin;
 import br.com.senior.desafiohotel.model.CheckinResult;
 
 import java.text.ParseException;
@@ -14,7 +14,7 @@ public class Diaria {
     public final static SimpleDateFormat analiseHora = new SimpleDateFormat("HH:mm");
 
 
-    public static CheckinResult calculaTotal(CheckinModel checkin) throws ParseException {
+    public static CheckinResult calculaTotal(Checkin checkin) throws ParseException {
         CheckinResult checklist = new CheckinResult();
 
         float totalDiaria = 0;
@@ -64,7 +64,7 @@ public class Diaria {
         checklist.setTotal(totalDiaria);
         return checklist;
     }
-    public static long calculaNumDias(CheckinModel checkin, String diaDaSemana){
+    public static long calculaNumDias(Checkin checkin, String diaDaSemana){
 
         int num = 1;
         if (diaDaSemana.equals("sabado")){num = 7;}

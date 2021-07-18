@@ -1,6 +1,6 @@
 package br.com.senior.desafiohotel.controller;
 
-import br.com.senior.desafiohotel.model.CheckinModel;
+import br.com.senior.desafiohotel.model.Checkin;
 import br.com.senior.desafiohotel.model.CheckinResult;
 import br.com.senior.desafiohotel.repository.CheckinRepository;
 import br.com.senior.desafiohotel.utils.Diaria;
@@ -21,7 +21,7 @@ public class CheckinController {
 
     // Incluir Checkin
     @PostMapping(path = "/api/checkin/incluiCheckin" )
-    public CheckinModel incluir(@RequestBody CheckinModel checkin){
+    public Checkin incluir(@RequestBody Checkin checkin){
         return repository.save(checkin);
     }
 
@@ -34,14 +34,13 @@ public class CheckinController {
 
 
         //Lista para verificações
-        ArrayList<CheckinModel> checkinList = (ArrayList<CheckinModel>) repository.findAll();
+        ArrayList<Checkin> checkinList = (ArrayList<Checkin>) repository.findAll();
         //Lista para o resultado
         ArrayList<CheckinResult> resultList = new ArrayList<>();
 
         if (null != nomeRequest) {                                              // Se a consulta é pelo Nome
             nomeRequest = EncodeString.converter(nomeRequest);                  // Tratando caracteres
-            for (CheckinModel checkin : checkinList) {
-                System.out.println("Nome : " + checkin.getHospede().getNome());
+            for (Checkin checkin : checkinList) {
                 if (checkin.getHospede().getNome().equals(nomeRequest)) {
                     resultList.add(Diaria.calculaTotal(checkin));
                 }
@@ -49,7 +48,7 @@ public class CheckinController {
         }
         if (null != docRequest) {                                               //Se a consulta é pelo Documento
             docRequest = EncodeString.converter(docRequest);                    // Tratando caracteres
-            for (CheckinModel checkin : checkinList) {
+            for (Checkin checkin : checkinList) {
                 if (checkin.getHospede().getDocumento().equals(docRequest)) {
                     resultList.add(Diaria.calculaTotal(checkin));
                 }
@@ -57,7 +56,7 @@ public class CheckinController {
         }
         if (null != foneRequest) {                                              //Se a consulta é pelo Telefone
             foneRequest = EncodeString.converter(foneRequest);                  // Tratando caracteres
-            for (CheckinModel checkin : checkinList) {
+            for (Checkin checkin : checkinList) {
                 if (checkin.getHospede().getTelefone().equals(foneRequest)) {
                     resultList.add(Diaria.calculaTotal(checkin));
                 }
