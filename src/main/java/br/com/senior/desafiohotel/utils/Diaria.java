@@ -12,75 +12,80 @@ import java.util.concurrent.TimeUnit;
 public class Diaria {
 
     public final static SimpleDateFormat analiseHora = new SimpleDateFormat("HH:mm");
-    public final static SimpleDateFormat analiseData = new SimpleDateFormat("dd/MM/yyyy");
+
 
     public static CheckinResult calculaTotal(CheckinModel checkin) throws ParseException {
         CheckinResult checklist = new CheckinResult();
 
-
+        float totalDiaria = 0;
         if (null != checkin.getDataSaida()){
-            // Calculo das diarias
-            long dif = (checkin.getDataSaida().getTime() - checkin.getDataEntrada().getTime());
-            TimeUnit data = TimeUnit.DAYS;
-            int diarias = (int) data.convert(dif,TimeUnit.MILLISECONDS);
+            // ## CALCULO DAS DIARIAS
 
-            System.out.println("Valor de DIF: " + dif);
-            // Verificação se houve checkout atrasado
-            // Comparação com horário do checkout e 16h30
-            // Adiciona-se 1 diária e aumenta o intervalo
+            // #1 - Intervalo entre dataEntrada e dataSaida
+            long temp01 = (checkin.getDataSaida().getTime() - checkin.getDataEntrada().getTime());
+
+            // Converte millisegundos em dias
+            TimeUnit dataDias = TimeUnit.DAYS;
+
+            long diarias = dataDias.convert(temp01,TimeUnit.MILLISECONDS);
+
+
+            // #2 - Verificação se houve checkout atrasado
             SimpleDateFormat sdfh = new SimpleDateFormat("HH:mm");
             String horaFormatada = sdfh.format(checkin.getDataSaida());
             Date limite = analiseHora.parse("16:30");
-            Date fechamento = analiseHora.parse(horaFormatada);
-            if (fechamento.after(limite)) {
+            Date fechamento = analiseHora.parse(horaFormatada);     // Comparação entre horários
+            if (fechamento.after(limite)) {                         // Adiciona-se 1 diária se latecheckout
                 Boolean lateCheckout;
                 diarias++;
             }
 
+            // #3 - Calcula o número de sabados e domingos usando a formula:
+            // (DAY_OF_WEEK(dataEntrada - <dia>) - diasEntrada + diasSaida) / 7
+            // INICIO
+            long sabados = calculaNumDias(checkin,"sabado");
+            long domingos = calculaNumDias(checkin,"domingo");
 
-            // Calcula o número de sabados
+            // #4 - Calcula os dias de final de semana
+            long diariasFinalSemana = sabados + domingos;
 
-            // Diminui o dia da semana pela dataEntrada
-            long dif2 = (checkin.getDataEntrada().getTime() - (86400000*7));
-            TimeUnit data2 = TimeUnit.DAYS;
-            long temp = data2.convert(dif2,TimeUnit.MILLISECONDS);
+            // #5 - Calcula os dias de semana
+            long diariasSemana = diarias - diariasFinalSemana;
 
-            SimpleDateFormat formatadata = new SimpleDateFormat();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(dif2);
-            System.out.println("Calendar: " + calendar.get(Calendar.DAY_OF_WEEK));
+            // #6 - Calcula os valores de diaria com base nos dias da semana
+            totalDiaria = (diariasSemana * 120) + (diariasFinalSemana * 150);
 
-            // Verifica o dia da semana da data de checkin
-            Calendar calendario = Calendar.getInstance();
-            calendario.setTime(checkin.getDataEntrada());
-            int diaSemanaEntrada = calendario.get(Calendar.DAY_OF_WEEK);
-            System.out.println("Dia da Semana: " + diaSemanaEntrada);
-
-            long dif4 = (checkin.getDataEntrada().getTime() - Calendar.getInstance().getTime().getTime());
-            TimeUnit data4 = TimeUnit.DAYS;
-            long temp4 = data4.convert(dif4,TimeUnit.MILLISECONDS);
-
-            long dif3 = (checkin.getDataSaida().getTime() - Calendar.getInstance().getTime().getTime());
-            TimeUnit data3 = TimeUnit.DAYS;
-            long temp2 = data2.convert(dif3,TimeUnit.MILLISECONDS);
-            System.out.println("Data Entrada: " + temp4);
-            long temp3 = (calendar.get(Calendar.DAY_OF_WEEK) - temp4 + temp2) / 7;
-            System.out.println("Data Saida: " + temp2);
-            System.out.println("Será que deu certo? " + temp3);
-
-
-            //Date dataIni,dataFim;
-            //SimpleDateFormat sdfd = new SimpleDateFormat("dd/MM/yyyy");
-            //String dataSaida = sdfd.format(checkin.getDataSaida());
-            //String dataEntrada = sdfd.format(checkin.getDataEntrada());
-            //dataIni
-            //long sabados = (diaSemanaEntrada - 7 - dataEntrada + dataSaida)/7;
-
-            System.out.println("Diarias: " + diarias);
+            // #7 - Calcula o valores de estacionamento, caso haja
+            if (checkin.isAdicionalVeiculo()){
+                totalDiaria = totalDiaria + (diariasSemana * 15) + (diariasFinalSemana * 20);
+            }
         }
         checklist.setCheckin(checkin);
-        checklist.setTotal(0.0F);
+        checklist.setTotal(totalDiaria);
         return checklist;
+    }
+    public static long calculaNumDias(CheckinModel checkin, String diaDaSemana){
+
+        int num = 1;
+        if (diaDaSemana.equals("sabado")){num = 7;}
+        if (diaDaSemana.equals("domingo")){num = 1;}
+
+        // Converte millisegundos em dias
+        TimeUnit dataDias = TimeUnit.DAYS;
+
+        Calendar temp02 = Calendar.getInstance();
+        temp02.setTimeInMillis(checkin.getDataEntrada().getTime() - (86400000*num));
+
+        // Verifica o dia da semana da data de checkin
+
+        long temp03 = (checkin.getDataEntrada().getTime() - Calendar.getInstance().getTime().getTime());
+        long diasEntrada = dataDias.convert(temp03,TimeUnit.MILLISECONDS);
+
+        long temp04 = (checkin.getDataSaida().getTime() - Calendar.getInstance().getTime().getTime());
+        long diasSaida = dataDias.convert(temp04,TimeUnit.MILLISECONDS);
+
+        return (temp02.get(Calendar.DAY_OF_WEEK) - diasEntrada + diasSaida) / 7;
+
     }
 
 }

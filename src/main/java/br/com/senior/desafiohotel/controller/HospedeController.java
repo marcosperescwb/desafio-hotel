@@ -2,14 +2,8 @@ package br.com.senior.desafiohotel.controller;
 
 import br.com.senior.desafiohotel.model.HospedeModel;
 import br.com.senior.desafiohotel.repository.HospedeRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.ArrayList;
 
 @RestController
 public class HospedeController {
@@ -53,18 +47,8 @@ public class HospedeController {
     }
 
     // Listar hospedes
-    //@Query(nativeQuery = true, value = "Select * from hospede;")
     @GetMapping(path = "/api/hospede/listar" )
-    //public Iterable<HospedeModel> listar(@RequestBody HospedeModel hospede){
     public Iterable<HospedeModel> listar(@RequestBody HospedeModel hospede){
-
         return repository.findAll();
     }
-
-//    EntityManagerFactory factory = Persistence.createEntityManagerFactory("meuapp");
-//    EntityManager em = factory.createEntityManager();
-//    HospedeModel hospedeModel = new HospedeModel(1,"Marcos","4444","4444");
-
-
-
 }

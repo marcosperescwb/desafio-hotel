@@ -1,7 +1,5 @@
 package br.com.senior.desafiohotel.model;
 
-import java.util.ArrayList;
-
 public class CheckinResult {
 
     private CheckinModel checkin;
