@@ -14,6 +14,8 @@
 
 Exemplo:  **spring.datasource.password=123**
 
+​       Nome do banco: hotel
+
 
 
 ### Métodos:
