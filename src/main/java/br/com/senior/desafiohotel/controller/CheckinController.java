@@ -32,36 +32,58 @@ public class CheckinController {
                            @RequestParam(value="documento", required = false) String docRequest,
                            @RequestParam(value="telefone", required = false) String foneRequest) throws ParseException {
 
-
-        //Lista para verificações
-        ArrayList<Checkin> checkinList = (ArrayList<Checkin>) repository.findAll();
-        //Lista para o resultado
+        //Resultado
         ArrayList<CheckinResult> resultList = new ArrayList<>();
 
         if (null != nomeRequest) {                                              // Se a consulta é pelo Nome
             nomeRequest = EncodeString.converter(nomeRequest);                  // Tratando caracteres
+            ArrayList<Checkin> checkinList = repository.getFindByName(nomeRequest);
             for (Checkin checkin : checkinList) {
-                if (checkin.getHospede().getNome().equals(nomeRequest)) {
-                    resultList.add(Diaria.calculaTotal(checkin));
-                }
+                resultList.add(Diaria.calculaTotal(checkin));
             }
         }
-        if (null != docRequest) {                                               //Se a consulta é pelo Documento
-            docRequest = EncodeString.converter(docRequest);                    // Tratando caracteres
+        if (null != docRequest) {                                              // Se a consulta é pelo Documento
+            ArrayList<Checkin> checkinList = repository.getFindByDoc(docRequest);
             for (Checkin checkin : checkinList) {
-                if (checkin.getHospede().getDocumento().equals(docRequest)) {
-                    resultList.add(Diaria.calculaTotal(checkin));
-                }
+                resultList.add(Diaria.calculaTotal(checkin));
             }
         }
-        if (null != foneRequest) {                                              //Se a consulta é pelo Telefone
-            foneRequest = EncodeString.converter(foneRequest);                  // Tratando caracteres
+        if (null != foneRequest) {                                              // Se a consulta é pelo Telefone
+            ArrayList<Checkin> checkinList = repository.getFindByFone(foneRequest);
             for (Checkin checkin : checkinList) {
-                if (checkin.getHospede().getTelefone().equals(foneRequest)) {
-                    resultList.add(Diaria.calculaTotal(checkin));
-                }
+                resultList.add(Diaria.calculaTotal(checkin));
             }
         }
         return resultList;
     }
+    // Consulta hospedes com checkin em aberto
+    @GetMapping(path = "/api/checkin/consultaHospedados")
+    public Iterable<CheckinResult> listarHospedados() throws ParseException {
+        // Lista para receber o repositorio
+        ArrayList<Checkin> checkinList = repository.findHospedados();
+        // Lista para o resultado
+        ArrayList<CheckinResult> resultList = new ArrayList<>();
+        CheckinResult result = new CheckinResult();
+
+        for (Checkin checkin : checkinList) {
+            result.setCheckin(checkin);
+            resultList.add(result);
+        }
+        return resultList;
+    }
+    // Consulta checkouts
+    @GetMapping(path = "/api/checkin/consultaCheckouts")
+    public Iterable<CheckinResult> listaCheckouts() throws ParseException {
+        // Lista para receber o repositorio
+        ArrayList<Checkin> checkinList = repository.findCheckout();
+        // Lista para o resultado
+        ArrayList<CheckinResult> resultList = new ArrayList<>();
+
+        for (Checkin checkin : checkinList) {
+            resultList.add(Diaria.calculaTotal(checkin));
+        }
+        return resultList;
+    }
+
+
 }

@@ -3,7 +3,9 @@ package br.com.senior.desafiohotel.model;
 public class CheckinResult {
 
     private Checkin checkin;
-    private float total;
+    private long totalDiariasSemana;
+    private long totalDiariasFinalSemana;
+    private float valorTotal;
 
     public Checkin getCheckin() {
         return checkin;
@@ -13,12 +15,27 @@ public class CheckinResult {
         this.checkin = checkin;
     }
 
-    public float getTotal() {
-        return total;
+    public long getTotalDiariasSemana() {
+        return totalDiariasSemana;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
+    public void setTotalDiariasSemana(long totDiariaSemana) {
+        this.totalDiariasSemana = totDiariaSemana;
     }
 
+    public long getTotalDiariasFinalSemana() {
+        return totalDiariasFinalSemana;
+    }
+
+    public void setTotalDiariasFinalSemana(long totDiariaFinalSemana) {
+        this.totalDiariasFinalSemana = totDiariaFinalSemana;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 }

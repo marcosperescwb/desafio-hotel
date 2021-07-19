@@ -3,8 +3,8 @@ package br.com.senior.desafiohotel.controller;
 import br.com.senior.desafiohotel.model.Hospede;
 import br.com.senior.desafiohotel.repository.HospedeRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class HospedeController {

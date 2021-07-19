@@ -24,15 +24,15 @@ Exemplo:  **spring.datasource.password=123**
 
   - **Parâmetro:** JSON com a seguinte estrutura:
 
-    {
+    `{`
 
-    "nome":"Fulano da Silva",
+    `"nome":"<string>",`
 
-    "documento":"123456",
+    `"documento":"<string>",`
 
-    "telefone":"9925-2211"
+    `"telefone":"<string>"`
 
-    }
+    `}`
 
   - **Exemplo de chamada:**localhost:8080/api/hospede/incluiHospede
 
@@ -62,17 +62,27 @@ Exemplo:  **spring.datasource.password=123**
 
   - **Parametro:** JSON com a seguinte estrutura: 
 
-    {
+     {`
 
-    "hospede": {},
+    ​        `"checkin": {`
 
-    "dataEntrada": "2021-07-18T08:00:00",
+    ​            `"dataEntrada": "<data hora>",`
 
-    "dataSaida":"2021-07-19T11:00:00",
+    ​            `"dataSaida": "<data hora>",`
 
-    "adicionalVeiculo": false/true
+    ​            `"adicionalVeiculo":<boolean>,`
 
-    }
+    ​            `"hospede": {`
+
+    ​                `"id": <int>,`
+
+    ​                `"nome": "<string>",`
+
+    ​                `"documento": "<string>",`
+
+    ​                `"telefone": "<string>"`
+
+    ​            `}`
 
   - **Exemplo de chamada:** localhost:8080/api/checkin/incluirCheckin
 
@@ -93,6 +103,136 @@ Exemplo:  **spring.datasource.password=123**
     localhost:8080/api/checkin/consultaHospede?documento=123456
 
     localhost:8080/api/checkin/consultaHospede?telefone=9925-2211
+
+  - **Retorno:**
+
+    `[    {`
+
+    ​        `"checkin": {`
+
+    ​            `"idCheckin": <int>,`
+
+    ​            `"dataEntrada": "<data hora>",`
+
+    ​            `"dataSaida": "<data hora>",`
+
+    ​            `"adicionalVeiculo":<boolean>,`
+
+    ​            `"hospede": {`
+
+    ​                `"id": <int>,`
+
+    ​                `"nome": "<string>",`
+
+    ​                `"documento": "<string>",`
+
+    ​                `"telefone": "<string>"`
+
+    ​            `}`
+
+    ​        `},`
+
+    ​        `"totalDiariasSemana": <long>,`
+
+    ​        `"totalDiariasFinalSemana": <long>,`
+
+    ​        `"valorTotal": <float>`
+
+    ​    `}`
+
+    `]`
+
+- **api/checkin/consultaHospedados:**Consulta no banco os checkins em aberto.
+
+  - **Parametros:** não possui.
+
+  - **Exemplo de chamada:**
+
+    localhost:8080/api/checkin/consultaHospedados
+
+  - **Retorno:**
+
+    `[    {`
+
+    ​        `"checkin": {`
+
+    ​            `"idCheckin": "<int>",`
+
+    ​            `"dataEntrada": "<data hora>",`
+
+    ​            `"dataSaida": "",`
+
+    ​            `"adicionalVeiculo":<boolean>,`
+
+    ​            `"hospede": {`
+
+    ​                `"id": <int>,`
+
+    ​                `"nome": "<string>",`
+
+    ​                `"documento": "<string>",`
+
+    ​                `"telefone": "<string>"`
+
+    ​            `}`
+
+    ​        `},`
+
+    ​        `"totalDiariasSemana": 0`
+
+    ​        `"totalDiariasFinalSemana": 0,`
+
+    ​        `"valorTotal": 0.0`
+
+    ​    `}`
+
+    ###### `]`
+
+- **api/checkin/consultaCheckouts:** Consulta no banco os checkins já finalizados.
+
+  - **Parametros:** não possui.
+
+    **Exemplos de chamada:**
+
+    localhost:8080/api/checkin/consultaCheckouts
+
+    **Retorno:**
+
+  - `[    {`
+
+    ​        `"checkin": {`
+
+    ​            `"idCheckin": <int>,`
+
+    ​            `"dataEntrada": "<data hora>",`
+
+    ​            `"dataSaida": "<data hora>",`
+
+    ​            `"adicionalVeiculo":<boolean>,`
+
+    ​            `"hospede": {`
+
+    ​                `"id": <id>,`
+
+    ​                `"nome": "<string>",`
+
+    ​                `"documento": "<string>",`
+
+    ​                `"telefone": "<string>"`
+
+    ​            `}`
+
+    ​        `},`
+
+    ​        `"totalDiariasSemana": <long>,`
+
+    ​        `"totalDiariasFinalSemana": <long>,`
+
+    ​        `"valorTotal": <float>`
+
+    ​    `}`
+
+    `]`
 
 
 

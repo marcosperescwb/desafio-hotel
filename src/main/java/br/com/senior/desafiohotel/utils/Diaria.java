@@ -18,6 +18,7 @@ public class Diaria {
         CheckinResult checklist = new CheckinResult();
 
         float totalDiaria = 0;
+        long diariasSemana = 0,diariasFinalSemana = 0;
         if (null != checkin.getDataSaida()){
             // ## CALCULO DAS DIARIAS
 
@@ -47,10 +48,10 @@ public class Diaria {
             long domingos = calculaNumDias(checkin,"domingo");
 
             // #4 - Calcula os dias de final de semana
-            long diariasFinalSemana = sabados + domingos;
+            diariasFinalSemana = sabados + domingos;
 
             // #5 - Calcula os dias de semana
-            long diariasSemana = diarias - diariasFinalSemana;
+            diariasSemana = diarias - diariasFinalSemana;
 
             // #6 - Calcula os valores de diaria com base nos dias da semana
             totalDiaria = (diariasSemana * 120) + (diariasFinalSemana * 150);
@@ -61,7 +62,9 @@ public class Diaria {
             }
         }
         checklist.setCheckin(checkin);
-        checklist.setTotal(totalDiaria);
+        checklist.setTotalDiariasSemana(diariasSemana);
+        checklist.setTotalDiariasFinalSemana(diariasFinalSemana);
+        checklist.setValorTotal(totalDiaria);
         return checklist;
     }
     public static long calculaNumDias(Checkin checkin, String diaDaSemana){
